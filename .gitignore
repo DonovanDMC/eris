@@ -1,5 +1,4 @@
 .DS_Store
-.vscode
 docgen
 docs
 node_modules
