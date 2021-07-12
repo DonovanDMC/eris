@@ -873,7 +873,9 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     content?: string;
     components?: ActionRow[];
+    /** @deprecated */
     embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
     flags?: number;
     messageReference?: MessageReferenceReply;
     /** @deprecated */
