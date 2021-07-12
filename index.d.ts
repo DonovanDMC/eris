@@ -47,6 +47,7 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
+  type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
@@ -417,7 +418,9 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale?: string;
     premiumSubscriptionCount?: number;
@@ -962,14 +965,21 @@ declare namespace Eris {
     messageID: string;
     failIfNotExists?: boolean;
   }
-  interface Sticker {
-    asset: string;
+  interface Sticker extends StickerItems {
+    /** @deprecated */
+    asset: "";
+    available?: boolean;
     description: string;
-    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+    guild_id?: string;
+    pack_id?: string;
+    sort_value?: number;
+    tags: string;
+    user?: User;
+  }
+  interface StickerItems {
     id: string;
     name: string;
-    pack_id: string;
-    tags?: string;
+    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
   interface URLButton extends ButtonBase {
     style: 5;
@@ -2101,7 +2111,9 @@ declare namespace Eris {
     members: Collection<Member>;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
     premiumSubscriptionCount?: number;
@@ -2413,7 +2425,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    /** @deprecated */
     stickers?: Sticker[];
+    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
