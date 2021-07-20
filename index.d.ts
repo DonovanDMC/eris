@@ -584,6 +584,7 @@ declare namespace Eris {
       listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
+    (event: "voiceStateUpdate", listener: (member: UncachedMemberVoiceState, oldState: null) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
     (event: "webhooksUpdate", listener: (data: WebhookData) => void): T;
     (event: string, listener: (...args: any[]) => void): T;
@@ -790,7 +791,7 @@ declare namespace Eris {
     presence_count: number;
   }
   interface WidgetMember {
-    avatar: null;
+    avatar: string | null;
     avatar_url: string;
     discriminator: string;
     id: string;
@@ -841,6 +842,9 @@ declare namespace Eris {
   interface MemberPartial {
     id: string;
     user: User;
+  }
+  interface MemberRoles extends BaseData {
+    roles: string[];
   }
   interface PartialUser {
     avatar: string | null;
@@ -1091,6 +1095,10 @@ declare namespace Eris {
   interface StageInstanceOptions {
     privacyLevel?: StageInstancePrivacyLevel;
     topic?: string;
+  }
+  interface UncachedMemberVoiceState {
+    id: string;
+    voiceState: OldVoiceState;
   }
   interface VoiceConnectData {
     channel_id: string;
@@ -2223,7 +2231,7 @@ declare namespace Eris {
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
     leaveVoiceChannel(): void;
-    permissionsOf(memberID: string | Member): Permission;
+    permissionsOf(memberID: string | Member | MemberRoles): Permission;
     pruneMembers(options?: PruneMemberOptions): Promise<number>;
     removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     searchMembers(query: string, limit?: number): Promise<Member[]>;
@@ -2273,7 +2281,7 @@ declare namespace Eris {
     ): Promise<PermissionOverwrite>;
     editPosition(position: number, options?: EditChannelPositionOptions): Promise<void>;
     getInvites(): Promise<Invite[]>;
-    permissionsOf(memberID: string | Member): Permission;
+    permissionsOf(memberID: string | Member | MemberRoles): Permission;
   }
 
   export class GuildIntegration extends Base {
